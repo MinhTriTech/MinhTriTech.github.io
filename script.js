@@ -1,115 +1,164 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const grid = document.getElementById('work-rhythm-grid');
-  if (!grid) return;
+(function () {
+  const activityContainer = document.querySelector('.activity-grid');
+  if (!activityContainer) return;
 
-  const today = new Date();
-  const username = 'MinhTriTech';
+  const username = activityContainer.getAttribute('data-github-username') || 'MinhTriTech';
+  const heatmapRow = document.getElementById('activity-heatmap-row');
+  const activityList = document.getElementById('activity-list');
 
-  const last7Days = Array.from({ length: 7 }).map((_, indexFromEnd) => {
-    const d = new Date(today);
-    d.setDate(today.getDate() - (6 - indexFromEnd));
-    return d;
-  });
+  if (!heatmapRow || !activityList) return;
 
-  const commitsByDate = {};
-  last7Days.forEach((d) => {
-    const key = formatDateKey(d);
-    commitsByDate[key] = 0;
-  });
+  const DAYS_BACK = 30;
+  const EVENTS_LIMIT = 60;
 
-  fetch(`https://api.github.com/users/${username}/events/public`)
-    .then((response) => {
-      if (!response.ok) return [];
-      return response.json();
-    })
-    .then((events) => {
-      if (!Array.isArray(events)) return [];
+  function formatRelativeTime(date) {
+    const now = new Date();
+    const diffMs = now - date;
+    const diffSec = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSec / 60);
+    const diffHours = Math.floor(diffMin / 60);
+    const diffDays = Math.floor(diffHours / 24);
 
-      events.forEach((event) => {
-        if (!event || !event.created_at) return;
+    if (diffSec < 60) return 'Vừa xong';
+    if (diffMin < 60) return `${diffMin} phút trước`;
+    if (diffHours < 24) return `${diffHours} giờ trước`;
+    if (diffDays < 7) return `${diffDays} ngày trước`;
 
-        const eventDate = new Date(event.created_at);
-        const key = formatDateKey(eventDate);
-
-        if (!Object.prototype.hasOwnProperty.call(commitsByDate, key)) return;
-
-        if (event.type === 'PushEvent' && event.payload) {
-          let commitCount = 0;
-
-          if (typeof event.payload.size === 'number') {
-            commitCount = event.payload.size;
-          } else if (Array.isArray(event.payload.commits)) {
-            commitCount = event.payload.commits.length;
-          }
-
-          commitsByDate[key] += commitCount;
-        }
-      });
-
-      renderRhythm(last7Days, commitsByDate);
-    })
-    .catch(() => {
-      renderRhythm(last7Days, commitsByDate);
-    });
-
-  function formatDateKey(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    const weeks = Math.floor(diffDays / 7);
+    return weeks === 1 ? '1 tuần trước' : `${weeks} tuần trước`;
   }
 
-  function renderRhythm(days, commitsMap) {
-    const labels = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+  function describeEvent(evt) {
+    const { type, repo, payload } = evt;
+    const repoName = repo ? repo.name : '';
 
-    const rhythm = days.map((d) => {
-      const dayIndex = d.getDay();
-      const dateKey = formatDateKey(d);
+    switch (type) {
+      case 'PushEvent': {
+        const commits = payload && Array.isArray(payload.commits) ? payload.commits.length : 1;
+        return `Đẩy ${commits} commit lên ${repoName}`;
+      }
+      case 'CreateEvent':
+        if (payload && payload.ref_type === 'repository') {
+          return `Tạo repository mới ${repoName}`;
+        }
+        return `Tạo ${payload && payload.ref_type ? payload.ref_type : 'resource'} trong ${repoName}`;
+      case 'IssuesEvent':
+        if (payload && payload.action) {
+          return `${payload.action === 'opened' ? 'Mở' : 'Cập nhật'} issue trên ${repoName}`;
+        }
+        return `Hoạt động với issue trên ${repoName}`;
+      case 'PullRequestEvent':
+        if (payload && payload.action) {
+          return `${payload.action === 'opened' ? 'Mở' : 'Cập nhật'} pull request trên ${repoName}`;
+        }
+        return `Hoạt động với pull request trên ${repoName}`;
+      case 'WatchEvent':
+        return `Star một repo: ${repoName}`;
+      case 'ForkEvent':
+        return `Fork repo ${repoName}`;
+      default:
+        return `Hoạt động trên ${repoName}`;
+    }
+  }
 
-      const dateLabel = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`;
-      const commits = commitsMap[dateKey] || 0;
+  function buildHeatmap(dailyCounts) {
+    heatmapRow.innerHTML = '';
 
-      return {
-        weekday: labels[dayIndex],
-        dateLabel,
-        commits,
-      };
-    });
+    const today = new Date();
+    const dates = [];
+    for (let i = DAYS_BACK - 1; i >= 0; i -= 1) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      dates.push(key);
+    }
 
-    const maxCommits = Math.max(...rhythm.map((item) => item.commits), 1);
+    const values = dates.map((d) => dailyCounts[d] || 0);
+    const max = values.reduce((acc, v) => (v > acc ? v : acc), 0);
 
-    rhythm.forEach((item) => {
-      const level = getCommitLevel(item.commits, maxCommits);
-
-      const wrapper = document.createElement('article');
-      wrapper.className = 'work-rhythm-item';
-      wrapper.setAttribute('role', 'listitem');
+    dates.forEach((dateStr) => {
+      const count = dailyCounts[dateStr] || 0;
+      let level = 0;
+      if (count > 0 && max > 0) {
+        const ratio = count / max;
+        if (ratio <= 0.33) level = 1;
+        else if (ratio <= 0.66) level = 2;
+        else level = 3;
+      }
 
       const cell = document.createElement('div');
-      cell.className = `work-rhythm-cell work-rhythm-cell--level-${level}`;
-
-      const tooltipText = `${item.commits} commit${item.commits !== 1 ? 's' : ''} ngày ${item.dateLabel}`;
-      cell.title = tooltipText;
-      cell.setAttribute('aria-label', tooltipText);
-
-      const dayLabel = document.createElement('div');
-      dayLabel.className = 'work-rhythm-day';
-      dayLabel.textContent = item.weekday;
-
-      wrapper.appendChild(cell);
-      wrapper.appendChild(dayLabel);
-
-      grid.appendChild(wrapper);
+      cell.className = `activity-cell level-${level}`;
+      cell.title = `${dateStr}: ${count} hoạt động`;
+      heatmapRow.appendChild(cell);
     });
   }
 
-  function getCommitLevel(commits, max) {
-    if (commits <= 0) return 0;
+  function buildActivityList(events) {
+    activityList.setAttribute('aria-busy', 'false');
+    activityList.innerHTML = '';
 
-    const ratio = commits / max;
-    if (ratio <= 0.25) return 1;
-    if (ratio <= 0.5) return 2;
-    if (ratio <= 0.75) return 3;
-    return 4;
+    if (!events.length) {
+      const p = document.createElement('p');
+      p.className = 'activity-status';
+      p.textContent = 'Chưa có hoạt động công khai nào gần đây trên GitHub. Có thể mình đang nghiên cứu offline hoặc thử ý tưởng mới.';
+      activityList.appendChild(p);
+      return;
+    }
+
+    events.slice(0, 5).forEach((evt) => {
+      const wrapper = document.createElement('article');
+      wrapper.className = 'activity-item';
+
+      const title = document.createElement('p');
+      title.className = 'activity-item-title';
+      title.textContent = describeEvent(evt);
+
+      const meta = document.createElement('p');
+      meta.className = 'activity-item-meta';
+      const time = new Date(evt.created_at);
+      meta.textContent = `${evt.repo ? evt.repo.name : ''} • ${formatRelativeTime(time)}`;
+
+      wrapper.appendChild(title);
+      wrapper.appendChild(meta);
+      activityList.appendChild(wrapper);
+    });
   }
-});
+
+  async function fetchActivity() {
+    try {
+      const res = await fetch(`https://api.github.com/users/${encodeURIComponent(username)}/events/public?per_page=${EVENTS_LIMIT}`);
+      if (!res.ok) {
+        throw new Error(`GitHub API trả về mã ${res.status}`);
+      }
+      const data = await res.json();
+
+      const cutoff = new Date();
+      cutoff.setDate(cutoff.getDate() - DAYS_BACK + 1);
+
+      const dailyCounts = {};
+      const recentEvents = [];
+
+      data.forEach((evt) => {
+        const created = new Date(evt.created_at);
+        if (created < cutoff) return;
+
+        const key = created.toISOString().slice(0, 10);
+        dailyCounts[key] = (dailyCounts[key] || 0) + 1;
+        recentEvents.push(evt);
+      });
+
+      buildHeatmap(dailyCounts);
+      buildActivityList(recentEvents);
+    } catch (err) {
+      console.error('Lỗi khi lấy hoạt động GitHub:', err);
+      activityList.setAttribute('aria-busy', 'false');
+      activityList.innerHTML = '';
+      const p = document.createElement('p');
+      p.className = 'activity-status';
+      p.textContent = 'Không tải được hoạt động từ GitHub lúc này (có thể do giới hạn API hoặc lỗi mạng). Thử tải lại trang sau một chút nhé.';
+      activityList.appendChild(p);
+    }
+  }
+
+  fetchActivity();
+})();

@@ -1,73 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Portfolio cá nhân MinhTriTech: xây dựng website và công cụ nội bộ theo hướng thực tế, rõ ràng và dễ vận hành.">
-  <title>MinhTriTech — Portfolio Nhà Quê</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-  <header class="nav">
-    <div class="container nav__inner">
-      <a href="#trang-chu" class="brand">MinhTriTech</a>
-      <nav class="nav__links" aria-label="Điều hướng chính">
-        <a href="#work-rhythm">Nhịp độ</a>
-        <a href="#education">Học vấn</a>
-        <a href="#projects">Dự án</a>
-        <a href="#skills">Kỹ năng</a>
-        <a href="#contact">Liên hệ</a>
-      </nav>
-    </div>
-  </header>
-
-  <main id="trang-chu">
-    <div class="container">
-      <section class="panel" id="work-rhythm" aria-labelledby="work-rhythm-title">
-        <h2 id="work-rhythm-title" class="section-title">Nhịp độ làm việc 7 ngày gần nhất</h2>
-        <div class="work-rhythm">
-          <div class="work-rhythm-grid" id="work-rhythm-grid" aria-label="Nhịp độ làm việc 7 ngày gần nhất" role="list"></div>
-          <div class="work-rhythm-legend" aria-hidden="true">
-            <span>Ít commit</span>
-            <span class="legend-dot legend-level-0"></span>
-            <span class="legend-dot legend-level-1"></span>
-            <span class="legend-dot legend-level-2"></span>
-            <span class="legend-dot legend-level-3"></span>
-            <span class="legend-dot legend-level-4"></span>
-            <span>Nhiều commit</span>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel" id="education" aria-labelledby="education-title">
-        <h2 id="education-title" class="section-title">Học vấn</h2>
-      </section>
-
-      <section class="panel" id="certificates" aria-labelledby="certificates-title">
-        <h2 id="certificates-title" class="section-title">Chứng chỉ</h2>
-      </section>
-
-      <section class="panel" id="projects" aria-labelledby="projects-title">
-        <h2 id="projects-title" class="section-title">Dự án</h2>
-      </section>
-
-      <section class="panel" id="skills" aria-labelledby="skills-title">
-        <h2 id="skills-title" class="section-title">Kỹ năng</h2>
-      </section>
-
-      <section class="panel" id="contact" aria-labelledby="contact-title">
-        <h2 id="contact-title" class="section-title">Liên hệ</h2>
-    </div>
-  </main>
-
-  <footer class="footer">
-    <div class="container footer__inner">
-      <p>&copy; 2026 MinhTriTech.</p>
-    </div>
-  </footer>
-
-  <script src="script.js" defer></script>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MinhTriTech — Landing Page ReactJS</title>
+    <meta
+      name="description"
+      content="MinhTriTech xây landing page và website tập trung chuyển đổi: rõ thông điệp, nhanh triển khai, dễ mở rộng."
+    />
+    <meta property="og:title" content="MinhTriTech — Landing Page ReactJS" />
+    <meta
+      property="og:description"
+      content="Dịch vụ xây dựng landing page và công cụ web theo hướng tối giản, hiệu quả và dễ vận hành."
+    />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
