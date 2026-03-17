@@ -5,7 +5,6 @@
 }
 
 :root {
-  /* Copilot-inspired dark theme palette */
   --bg-body: #020617;
   --bg-gradient-top: #020617;
   --bg-gradient-bottom: #020617;
@@ -301,8 +300,6 @@ h1 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
-
-/* GitHub activity section */
 
 .activity-grid {
   display: grid;

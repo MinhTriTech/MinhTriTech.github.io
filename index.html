@@ -1,138 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="MinhTriTech - Giải pháp công nghệ chuyên nghiệp: phát triển web, mobile, phần mềm theo yêu cầu.">
-  <title>MinhTriTech — Giải pháp công nghệ</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-  <!-- NAV -->
-  <header class="nav">
-    <div class="container nav__inner">
-      <a href="#" class="nav__logo">MinhTriTech</a>
-      <nav>
-        <a href="#services">Dịch vụ</a>
-        <a href="#contact">Liên hệ</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <section class="hero" id="hero">
-    <div class="container hero__inner">
-      <h1 class="hero__title">
-        Giải pháp công nghệ<br>
-        <span class="accent">cho doanh nghiệp của bạn</span>
-      </h1>
-      <p class="hero__sub">
-        Phát triển web, ứng dụng và hệ thống phần mềm theo yêu cầu —
-        nhanh, bền, hiệu quả.
-      </p>
-      <div class="hero__cta">
-        <a href="#contact" class="btn btn--primary">Liên hệ ngay</a>
-        <a href="#services" class="btn btn--outline">Xem dịch vụ</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- SERVICES -->
-  <section class="services" id="services">
-    <div class="container">
-      <h2 class="section-title">Dịch vụ</h2>
-      <p class="section-sub">Chúng tôi cung cấp các giải pháp công nghệ toàn diện</p>
-      <div class="services__grid">
-        <div class="card">
-          <div class="card__icon">🌐</div>
-          <h3>Phát triển Web</h3>
-          <p>Thiết kế và xây dựng website từ landing page đến hệ thống web phức tạp, chuẩn SEO, tốc độ cao.</p>
-        </div>
-        <div class="card">
-          <div class="card__icon">📱</div>
-          <h3>Ứng dụng Mobile</h3>
-          <p>Phát triển ứng dụng iOS và Android theo yêu cầu, UI/UX hiện đại, tích hợp API đầy đủ.</p>
-        </div>
-        <div class="card">
-          <div class="card__icon">⚙️</div>
-          <h3>Hệ thống Phần mềm</h3>
-          <p>Xây dựng phần mềm quản lý, ERP, CRM tùy chỉnh theo quy trình nghiệp vụ của doanh nghiệp.</p>
-        </div>
-        <div class="card">
-          <div class="card__icon">☁️</div>
-          <h3>Cloud &amp; DevOps</h3>
-          <p>Triển khai, tối ưu hệ thống cloud, CI/CD pipeline, monitoring và bảo mật hạ tầng.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA BANNER -->
-  <section class="cta-banner">
-    <div class="container cta-banner__inner">
-      <h2>Sẵn sàng bắt đầu dự án?</h2>
-      <p>Để lại thông tin và chúng tôi sẽ liên hệ tư vấn miễn phí trong vòng 24 giờ.</p>
-      <div class="cta-banner__btns">
-        <!-- TODO: thay YOUR_ZALO_NUMBER bằng số Zalo thực tế -->
-        <a href="https://zalo.me/YOUR_ZALO_NUMBER" class="btn btn--white" target="_blank" rel="noopener noreferrer">
-          Chat Zalo
-        </a>
-        <!-- TODO: thay YOUR_FACEBOOK_PAGE bằng URL Facebook thực tế -->
-        <a href="https://facebook.com/YOUR_FACEBOOK_PAGE" class="btn btn--white-outline" target="_blank" rel="noopener noreferrer">
-          Facebook
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="contact" id="contact">
-    <div class="container">
-      <h2 class="section-title">Liên hệ</h2>
-      <p class="section-sub">Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn</p>
-      <div class="contact__grid">
-        <div class="contact__info">
-          <div class="contact__item">
-            <span class="contact__icon">✉️</span>
-            <!-- TODO: thay bằng email thực tế -->
-            <a href="mailto:hello@minhtritech.me">hello@minhtritech.me</a>
-          </div>
-          <div class="contact__item">
-            <span class="contact__icon">📞</span>
-            <!-- TODO: thay bằng số điện thoại thực tế -->
-            <a href="tel:+84000000000">+84 000 000 000</a>
-          </div>
-          <div class="contact__item">
-            <span class="contact__icon">📍</span>
-            <span>Việt Nam</span>
-          </div>
-        </div>
-
-        <!-- TODO: kết nối form (Formspree: action="https://formspree.io/f/YOUR_ID" method="POST") -->
-        <form class="contact__form" action="#" method="POST">
-          <input type="text" name="name" placeholder="Họ và tên" required autocomplete="name">
-          <input type="email" name="email" placeholder="Email" required autocomplete="email">
-          <textarea name="message" placeholder="Mô tả yêu cầu của bạn..." rows="4" required></textarea>
-          <button type="submit" class="btn btn--primary">Gửi yêu cầu</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="container footer__inner">
-      <p class="footer__brand">MinhTriTech</p>
-      <p class="footer__copy">&copy; 2026 MinhTriTech. All rights reserved.</p>
-      <div class="footer__links">
-        <!-- TODO: cập nhật links thực tế -->
-        <a href="https://facebook.com/YOUR_FACEBOOK_PAGE" target="_blank" rel="noopener noreferrer">Facebook</a>
-        <a href="https://zalo.me/YOUR_ZALO_NUMBER" target="_blank" rel="noopener noreferrer">Zalo</a>
-        <a href="mailto:hello@minhtritech.me">Email</a>
-      </div>
-    </div>
-  </footer>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MinhTriTech — Landing Page ReactJS</title>
+    <meta
+      name="description"
+      content="MinhTriTech xây landing page và website tập trung chuyển đổi: rõ thông điệp, nhanh triển khai, dễ mở rộng."
+    />
+    <meta property="og:title" content="MinhTriTech — Landing Page ReactJS" />
+    <meta
+      property="og:description"
+      content="Dịch vụ xây dựng landing page và công cụ web theo hướng tối giản, hiệu quả và dễ vận hành."
+    />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
