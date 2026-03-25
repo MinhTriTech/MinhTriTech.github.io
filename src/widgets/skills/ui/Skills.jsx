@@ -1,4 +1,4 @@
-import { skillsContent } from '../data/content';
+import { skillsContent } from '../../../entities/landing/model/content';
 import styles from './Skills.module.css';
 
 export default function Skills() {

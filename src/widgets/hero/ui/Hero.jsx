@@ -1,4 +1,4 @@
-import { heroContent } from '../data/content';
+import { heroContent } from '../../../entities/landing/model/content';
 import styles from './Hero.module.css';
 
 export default function Hero() {

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ACTIVITY_MESSAGES } from '../lib/constants';
+import { ACTIVITY_MESSAGES } from '../../../shared/config/constants';
 import { buildActivityModel, fetchGitHubEvents } from '../lib/githubActivity';
 
 export default function useGitHubActivity(username) {

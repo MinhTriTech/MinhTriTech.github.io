@@ -1,4 +1,4 @@
-import { projectsContent } from '../data/content';
+import { projectsContent } from '../../../entities/landing/model/content';
 import styles from './Projects.module.css';
 
 export default function Projects() {

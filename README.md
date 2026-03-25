@@ -1,25 +1,27 @@
-# MinhTriTech Landing Page (ReactJS + Vite)
+# MinhTriTech Landing Page (Next.js)
 
-Landing page một trang cho domain [minhtritech.me](https://minhtritech.me), được build lại bằng ReactJS theo hướng component-based, nội dung dễ chỉnh sửa và giữ giao diện dark theme hiện có.
+Landing page một trang cho domain [minhtritech.me](https://minhtritech.me), được build bằng **Next.js 14** theo hướng component-based, nội dung dễ chỉnh sửa và giữ giao diện dark theme hiện có.
 
 ## Stack
 
 - React 18
-- Vite 5
+- Next.js 14
 - JavaScript (ES Modules)
-- CSS thuần (global stylesheet)
+- CSS Modules
 
 ## Cấu trúc chính
 
 | Đường dẫn | Mô tả |
 |---|---|
-| `index.html` | Entry HTML + SEO metadata + mount point `#root` |
-| `src/App.jsx` | Ghép toàn bộ section landing page |
-| `src/components/*` | Components: Header, Hero, About, Projects, Activity, Skills, Contact, Footer |
-| `src/data/content.js` | Toàn bộ nội dung/copy của landing page |
-| `src/hooks/useGitHubActivity.js` | Hook fetch và quản lý trạng thái activity GitHub |
-| `src/lib/githubActivity.js` | Hàm fetch API + formatter + build dữ liệu heatmap |
-| `src/index.css` | Toàn bộ style global (migrate từ bản tĩnh) |
+| `app/layout.jsx` | Root layout với Header và Footer |
+| `app/page.jsx` | Trang chính ghép toàn bộ section landing page |
+| `app/components/*` | Components: Hero, About, Projects, Activity, Skills, Contact, Header, Footer |
+| `app/globals.css` | Global stylesheet (dark theme) |
+| `src/entities/landing/model/content.js` | Toàn bộ nội dung/copy của landing page |
+| `src/entities/github-activity/*` | Hook + utility fetch và format GitHub activity |
+| `src/shared/config/constants.js` | Constants (GitHub username, messages, etc.) |
+| `jsconfig.json` | Path aliases (@app, @entities, @shared, etc.) |
+| `.env.local` | Environment variables (GitHub config) |
 | `CNAME` | Custom domain: `minhtritech.me` |
 
 ## Chạy local
@@ -29,24 +31,56 @@ npm install
 npm run dev
 ```
 
-App local mặc định: `http://localhost:5173`
+App local mặc định: `http://localhost:3000`
 
 ## Build production
 
 ```bash
 npm run build
-npm run preview
+npm start
 ```
 
-Thư mục output: `dist/`
+Output Next.js: `.next/` (tự động optimize)
 
 ## Chỉnh nội dung nhanh
 
-- Sửa text landing page trong `src/data/content.js`
-- Sửa username GitHub trong `src/lib/constants.js` (`GITHUB_USERNAME`)
-- Sửa màu/spacing trong `src/index.css`
+- Sửa text landing page trong `src/entities/landing/model/content.js`
+- Sửa username GitHub trong `src/shared/config/constants.js` (`GITHUB_USERNAME`)
+- Sửa màu/spacing trong `app/globals.css` hoặc `app/components/*.module.css`
 
-## GitHub Pages + custom domain
+## Environment Variables
+
+Tạo `.env.local`:
+
+```env
+NEXT_PUBLIC_GITHUB_USERNAME=minhtritech
+# NEXT_PUBLIC_GITHUB_TOKEN=your_token_here  # Optional: for higher rate limits
+```
+
+## GitHub Pages + Custom Domain
+
+Next.js được deploy tự động trên GitHub Pages thông qua GitHub Actions hoặc manual build:
+
+```bash
+npm run build
+```
+
+Output sẽ tối ưu hoá cho static hosting.
+
+## Migration từ Vite → Next.js
+
+**Lợi ích:**
+- Tốc độ load nhanh hơn (Image optimization, Code splitting tự động)
+- SEO tốt hơn (Server-side rendering metadata)
+- API routes có sẵn (nếu cần backend sau)
+- Ecosystem rộng và cộng đồng lớn hơn
+
+**Thay đổi chính:**
+- `src/` → `app/` (Next.js app directory)
+- Vite config → `next.config.js`
+- Path aliases trong `jsconfig.json` (thay vì `vite.config.js`)
+- Components không cần wrapper HTML nữa (Next.js tự xử lý)
+
 
 - Giữ file `CNAME` để preserve domain `minhtritech.me`
 - Sau khi build, publish artifact từ `dist/` theo quy trình deploy bạn đang dùng

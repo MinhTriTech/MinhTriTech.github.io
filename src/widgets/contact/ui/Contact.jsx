@@ -1,4 +1,4 @@
-import { contactContent } from '../data/content';
+import { contactContent } from '../../../entities/landing/model/content';
 import styles from './Contact.module.css';
 
 export default function Contact() {

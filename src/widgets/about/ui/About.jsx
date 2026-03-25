@@ -1,4 +1,4 @@
-import { aboutContent } from '../data/content';
+import { aboutContent } from '../../../entities/landing/model/content';
 import styles from './About.module.css';
 
 export default function About() {

@@ -1,0 +1,67 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(15, 23, 42, 0.82);
+  border-bottom: 1px solid var(--border-subtle);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.inner {
+  min-height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brand {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: 0.02em;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  position: relative;
+}
+
+.link {
+  font-weight: 600;
+  padding: 0.28rem 0.1rem;
+  color: var(--text-muted);
+  transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1;
+}
+
+.link:hover,
+.link:focus-visible {
+  color: var(--accent-cyan);
+  text-decoration: none;
+}
+
+.link.active {
+  color: var(--accent-cyan);
+}
+
+.indicator {
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  height: 2px;
+  background-color: var(--accent-cyan);
+  border-radius: 1px;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1), left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+}
+
+.button {
+    padding: 0.28rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+}

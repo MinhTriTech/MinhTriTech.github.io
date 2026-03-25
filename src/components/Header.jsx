@@ -1,15 +1,16 @@
 import { navLinks } from '../data/content';
+import styles from './Header.module.css';
 
 export default function Header() {
   return (
-    <header className="nav">
-      <div className="container nav__inner">
-        <a href="#trang-chu" className="brand">
+    <header className={styles.nav}>
+      <div className={`container ${styles.inner}`}>
+        <a href="#trang-chu" className={styles.brand}>
           MinhTriTech
         </a>
-        <nav className="nav__links" aria-label="Điều hướng chính">
+        <nav className={styles.links} aria-label="Điều hướng chính">
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href}>
+            <a key={link.href} href={link.href} className={styles.link}>
               {link.label}
             </a>
           ))}

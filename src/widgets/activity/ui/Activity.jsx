@@ -1,6 +1,6 @@
-import { GITHUB_USERNAME } from '../lib/constants';
-import { describeEvent, formatRelativeTime } from '../lib/githubActivity';
-import useGitHubActivity from '../hooks/useGitHubActivity';
+import { GITHUB_USERNAME } from '../../../shared/config/constants';
+import { describeEvent, formatRelativeTime } from '../../../entities/github-activity/lib/githubActivity';
+import useGitHubActivity from '../../../entities/github-activity/model/useGitHubActivity';
 import styles from './Activity.module.css';
 
 export default function Activity() {

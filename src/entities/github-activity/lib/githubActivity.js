@@ -1,4 +1,4 @@
-import { DAYS_BACK, EVENTS_LIMIT } from './constants';
+import { DAYS_BACK, EVENTS_LIMIT } from '../../../shared/config/constants';
 
 export async function fetchGitHubEvents(username) {
   const response = await fetch(
