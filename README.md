@@ -1,6 +1,6 @@
-# MinhTriTech Landing Page
+# MinhTriTech Portfolio
 
-Landing page một trang cho domain [minhtritech.me](https://minhtritech.me), build bằng **React 18 + Vite 5** theo kiến trúc Feature-Sliced Design (FSD), nội dung dễ chỉnh sửa và giao diện dark theme hiện đại.
+Portfolio một trang cho domain [minhtritech.me](https://minhtritech.me), build bằng **React 18 + Vite 5**, hỗ trợ song ngữ Việt/Anh và giao diện dark theme hiện đại.
 
 ## Stack
 
@@ -13,38 +13,28 @@ Landing page một trang cho domain [minhtritech.me](https://minhtritech.me), bu
 
 ```
 src/
-├── app/                         # Root App component + global styles
-│   ├── App.jsx
-│   └── styles/global.css
-├── widgets/                     # Các section UI của landing page
-│   ├── header/ui/
-│   ├── hero/ui/
-│   ├── about/ui/
-│   ├── projects/ui/
-│   ├── skills/ui/
-│   ├── activity/ui/
-│   ├── contact/ui/
-│   └── footer/ui/
-├── entities/
-│   ├── landing/model/content.js # Toàn bộ nội dung/copy của landing page
-│   └── github-activity/         # Hook + utility fetch GitHub activity
+├── App.jsx                              # Root component, bọc LanguageProvider
+├── main.jsx                             # Entry point
+├── config/
+│   └── api.js                           # API URL từ biến môi trường VITE_API_URL
+├── context/
+│   └── LanguageContext.jsx              # Context chuyển ngôn ngữ VI/EN
 ├── pages/
-│   ├── home/ui/HomePage.jsx
-│   └── portfolio/PortfolioPage.jsx
-└── shared/
-    ├── config/constants.js      # Constants (GitHub username, v.v.)
-    └── context/LanguageContext.jsx
+│   └── portfolio/
+│       ├── PortfolioPage.jsx            # Trang portfolio chính (toàn bộ nội dung)
+│       └── PortfolioPage.module.css     # CSS Modules cho trang portfolio
+└── styles/
+    └── global.css                       # Global stylesheet (dark theme)
 ```
 
 | Đường dẫn | Mô tả |
 |---|---|
-| `src/app/App.jsx` | Root component, bọc LanguageProvider |
-| `src/widgets/*/ui/` | Components: Hero, About, Projects, Activity, Skills, Contact, Header, Footer |
-| `src/app/styles/global.css` | Global stylesheet (dark theme) |
-| `src/entities/landing/model/content.js` | Toàn bộ nội dung/copy của landing page |
-| `src/entities/github-activity/` | Hook + utility fetch và format GitHub activity |
-| `src/shared/config/constants.js` | Constants (GitHub username, messages, v.v.) |
-| `src/shared/context/LanguageContext.jsx` | Context chuyển ngôn ngữ VI/EN |
+| `src/App.jsx` | Root component, bọc `LanguageProvider` |
+| `src/main.jsx` | Entry point React |
+| `src/config/api.js` | Export `API_URL` từ `import.meta.env.VITE_API_URL` |
+| `src/context/LanguageContext.jsx` | Context + hook `useLanguage` để toggle VI/EN |
+| `src/pages/portfolio/PortfolioPage.jsx` | Toàn bộ nội dung và các section: Hero, Projects, Skills, Contact, Footer |
+| `src/styles/global.css` | Global stylesheet (dark theme) |
 | `vite.config.js` | Cấu hình Vite |
 | `CNAME` | Custom domain: `minhtritech.me` |
 
@@ -57,6 +47,16 @@ npm run dev
 
 App local mặc định: `http://localhost:5173`
 
+## Biến môi trường
+
+Tạo file `.env.local` ở thư mục gốc:
+
+```
+VITE_API_URL=https://your-backend-url
+```
+
+Biến này được dùng trong `src/config/api.js` và fetch dữ liệu từ backend trong `PortfolioPage.jsx`.
+
 ## Build production
 
 ```bash
@@ -68,19 +68,14 @@ Output Vite: `dist/` (tự động tối ưu hóa)
 
 ## Chỉnh nội dung nhanh
 
-- Sửa text landing page trong `src/entities/landing/model/content.js`
-- Sửa username GitHub trong `src/shared/config/constants.js`
-- Sửa màu/spacing trong `src/app/styles/global.css` hoặc `src/widgets/*/*.module.css`
-- Nội dung song ngữ (VI/EN): `src/entities/landing/model/content-bilingual.js`
+- Sửa text/nội dung landing page trực tiếp trong `src/pages/portfolio/PortfolioPage.jsx` (object `content.vi` và `content.en`)
+- Sửa màu/spacing trong `src/styles/global.css` hoặc `src/pages/portfolio/PortfolioPage.module.css`
+- Thêm/bớt ngôn ngữ: chỉnh `src/context/LanguageContext.jsx`
 
 ## Deploy tự động bằng GitHub Actions
 
 - Workflow tại `.github/workflows/deploy.yml`
 - Trigger khi push vào nhánh `main`
-- Pipeline: `npm install` → `npm run build` → upload `dist/` → deploy GitHub Pages
+- Pipeline: `npm install` → `npm run build` (với `VITE_API_URL` từ secret) → upload `dist/` → deploy GitHub Pages
+- Secret cần cấu hình: `VITE_API_URL` tại `Settings → Secrets and variables → Actions`
 - Cấu hình repo: `Settings → Pages → Build and deployment → Source = GitHub Actions`
-
-## Lưu ý activity GitHub
-
-- Endpoint: `GET https://api.github.com/users/{username}/events/public`
-- API public có rate limit theo IP; khi lỗi/rate-limit, UI hiển thị fallback message.
