@@ -1,8 +1,8 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import styles from './PortfolioPage.module.css';
+
+import { API_URL } from '../../config/api'; 
 
 export default function PortfolioPage() {
   const { language, toggleLanguage } = useLanguage();
