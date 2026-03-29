@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useLanguage } from '../../shared/context/LanguageContext';
+import React, { useEffect, useState } from 'react';
+import { useLanguage } from '../../context/LanguageContext';
 import styles from './PortfolioPage.module.css';
 
 export default function PortfolioPage() {
@@ -100,6 +100,15 @@ export default function PortfolioPage() {
   };
 
   const t = content[language] || content.vi;
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      const res = await fetch(`${API_URL}/test`);
+      console.log(res);
+    };
+
+    fetchContent();
+  }, []);
 
   return (
     <div className={styles.portfolio}>
